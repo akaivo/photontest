@@ -19,6 +19,11 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 
     public virtual void Start()
     {
+        PhotonNetwork.sendRate = 50;
+        PhotonNetwork.sendRateOnSerialize = 25;
+        Debug.Log("SendRate: " + PhotonNetwork.sendRate);
+        Debug.Log("SendRateOnSerialize: " + PhotonNetwork.sendRateOnSerialize);
+
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
     }
 
