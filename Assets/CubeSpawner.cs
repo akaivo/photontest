@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enabler : Photon.MonoBehaviour {
+public class CubeSpawner : Photon.MonoBehaviour {
 
     public void OnJoinedRoom()
     {

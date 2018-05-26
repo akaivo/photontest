@@ -11,6 +11,7 @@ public class Move : Photon.MonoBehaviour {
     
 	void Update ()
     {
+
         if (!photonView.isMine) return;
 
         direction = Vector3.zero;
