@@ -4,17 +4,9 @@ using UnityEngine;
 
 public class Enabler : Photon.MonoBehaviour {
 
-    public GameObject cube;
-
     public void OnJoinedRoom()
     {
-        StartCoroutine(delayActivation());
+        PhotonNetwork.Instantiate("NetworkedCube", new Vector3(0, 0, 0), Quaternion.identity, 0);
     }
 
-    private IEnumerator delayActivation()
-    {
-        yield return new WaitForSecondsRealtime(0.5f);
-        cube.SetActive(true);
-        Debug.Log("Activated");
-    }
 }
