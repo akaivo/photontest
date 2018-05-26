@@ -12,10 +12,10 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     public bool AutoConnect = true;
 
     public byte Version = 1;
+    public string userId = "master";
 
     /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
-
 
     public virtual void Start()
     {
@@ -41,6 +41,8 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     public virtual void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
+        PhotonNetwork.AuthValues = new AuthenticationValues();
+        PhotonNetwork.AuthValues.UserId = userId;
         PhotonNetwork.JoinRandomRoom();
     }
 
