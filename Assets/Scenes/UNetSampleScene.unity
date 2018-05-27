@@ -344,13 +344,25 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 448599619}
+  - component: {fileID: 448599618}
   m_Layer: 0
-  m_Name: CubeSpawner
+  m_Name: SendIntervalSetting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &448599618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 448599617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad43c8503097b940b19db2fef4c29f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &448599619
 Transform:
   m_ObjectHideFlags: 0

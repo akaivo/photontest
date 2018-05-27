@@ -8,7 +8,7 @@ public class UNetMove : NetworkBehaviour {
     [Range(1f, 10f)]
     public float speed = 2f;
 
-	void Update ()
+    void Update ()
     {
 
         if (!isLocalPlayer) return;
