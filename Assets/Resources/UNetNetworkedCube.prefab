@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114131942913839858}
   - component: {fileID: 114153215793883962}
   - component: {fileID: 114577666521883050}
+  - component: {fileID: 114691420009735498}
   m_Layer: 0
   m_Name: UNetNetworkedCube
   m_TagString: Untagged
@@ -178,6 +179,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
+--- !u!114 &114691420009735498
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1496515555325690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6867e67727ea464da657d1644f1670f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114735880615331150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -189,4 +201,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eafb3f4a7e2ef4c9b7091f6d21b77a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 1
+  amount: 2

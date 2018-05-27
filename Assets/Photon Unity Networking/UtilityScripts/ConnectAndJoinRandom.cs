@@ -13,14 +13,16 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 
     public byte Version = 1;
     public string userId = "master";
+    public int SendRate = 50;
+    public int SendRateOnSerialize = 25;
 
     /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
 
     public virtual void Start()
     {
-        PhotonNetwork.sendRate = 50;
-        PhotonNetwork.sendRateOnSerialize = 25;
+        PhotonNetwork.sendRate = SendRate;
+        PhotonNetwork.sendRateOnSerialize = SendRateOnSerialize;
         Debug.Log("SendRate: " + PhotonNetwork.sendRate);
         Debug.Log("SendRateOnSerialize: " + PhotonNetwork.sendRateOnSerialize);
 
