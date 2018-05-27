@@ -12,13 +12,11 @@ public class SendRateDisplay : NetworkBehaviour {
 
     private void OnEnable()
     {
-        if (!isLocalPlayer) return;
         GetComponent<SendRateChanger>().OnSendRateChange += updateValues;
     }
 
     private void OnDisable()
     {
-        if (!isLocalPlayer) return;
         GetComponent<SendRateChanger>().OnSendRateChange -= updateValues;
     }
 
