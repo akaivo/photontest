@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class UNetMove : Photon.MonoBehaviour {
+public class UNetMove : NetworkBehaviour {
 
     [Range(0.01f, 1f)]
     public float speed = 0.1f;
@@ -11,6 +12,8 @@ public class UNetMove : Photon.MonoBehaviour {
     
 	void Update ()
     {
+
+        if (!isLocalPlayer) return;
 
         direction = Vector3.zero;
         if (Input.GetKey(KeyCode.A)) direction += Vector3.left;
