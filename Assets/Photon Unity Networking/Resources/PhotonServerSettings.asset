@@ -21,7 +21,7 @@ MonoBehaviour:
   ServerAddress: 192.168.1.227
   ServerPort: 4530
   VoiceServerPort: 5055
-  JoinLobby: 1
+  JoinLobby: 0
   EnableLobbyStatistics: 0
   PunLogging: 0
   NetworkLogging: 1
