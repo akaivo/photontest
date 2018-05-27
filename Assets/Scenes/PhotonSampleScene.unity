@@ -457,6 +457,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AutoConnect: 1
   Version: 1
+  userId: master
+  SendRate: 100
+  SendRateOnSerialize: 100
 --- !u!4 &2115893463
 Transform:
   m_ObjectHideFlags: 0
