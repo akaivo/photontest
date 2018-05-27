@@ -13,7 +13,7 @@ public class SendRateChangerInput : NetworkBehaviour {
     {
         if (!isLocalPlayer) return;
 
-        if (Input.GetKey(KeyCode.KeypadPlus)) GetComponent<SendRateChanger>().Increase(amount);
-        if (Input.GetKey(KeyCode.KeypadMinus)) GetComponent<SendRateChanger>().Decrease(amount);
+        if (Input.GetKey(KeyCode.E)) GetComponent<SendRateChanger>().Increase(amount);
+        if (Input.GetKey(KeyCode.Q)) GetComponent<SendRateChanger>().Decrease(amount);
     }
 }
