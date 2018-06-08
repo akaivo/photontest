@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4242123094270490}
   - component: {fileID: 114311905032559064}
+  - component: {fileID: 114920650921546528}
   m_Layer: 0
   m_Name: HighlightManager
   m_TagString: Untagged
@@ -72,3 +73,14 @@ MonoBehaviour:
     i15: 43
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114920650921546528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1262454054870030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365dea5f9207f154b923b1be7838e9be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
