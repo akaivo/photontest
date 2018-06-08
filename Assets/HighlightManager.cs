@@ -1,23 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class HighlightManager : MonoBehaviour {
+public class HighlightManager : NetworkBehaviour {
 
     private void OnGUI()
     {
+        if (!hasAuthority) return;
+
         var playerNames = FindObjectsOfType<PlayerName>();
-        foreach (var playerName in playerNames)
+        int count = playerNames.Length;
+        for (int i = 0; i < count; i++)
         {
-            GUI.Button(new Rect(100, 10, 150, 50), playerName.deviceName);
+            var r = new Rect(10, 200 + 50 * i, 200, 50);
+            GUI.Button(r, playerNames[i].deviceName);
         }
     }
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
