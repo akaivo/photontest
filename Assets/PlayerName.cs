@@ -5,11 +5,14 @@ using UnityEngine.Networking;
 
 public class PlayerName : NetworkBehaviour {
 
+    [SyncVar]
     public string deviceName;
+    [SyncVar]
     public string UID;
 
 	void Start ()
     {
+        if (!isLocalPlayer) return;
         Debug.Log("Client call CmdSetNameAndId");
         CmdSetNameAndId(SystemInfo.deviceName, SystemInfo.deviceUniqueIdentifier);
 	}
@@ -18,9 +21,11 @@ public class PlayerName : NetworkBehaviour {
 	private void CmdSetNameAndId(string newName, string newUID)
     {
         Debug.Log("Server CmdSetNameAndId run. " + newName);
-        RpcSetNameAndId(newName, newUID);
+        deviceName = newName;
+        UID = newUID;
+        //RpcSetNameAndId(newName, newUID);
 	}
-
+    /*
     [ClientRpc]
     private void RpcSetNameAndId(string newName, string newUID)
     {
@@ -28,5 +33,5 @@ public class PlayerName : NetworkBehaviour {
         UID = newUID;
         Debug.LogFormat("RpcSetNameAndId; Name: {0}, UID: {1}", deviceName, UID);
         gameObject.name = newName;
-    }
+    }*/
 }
