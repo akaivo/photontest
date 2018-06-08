@@ -33,6 +33,11 @@ public class HighlightManager : NetworkBehaviour {
         if(currentHighlightUID != string.Empty ) SetPlayerHighlight(currentHighlightUID, true);
     }
 
+    private void OnDestroy()
+    {
+        if (currentHighlightUID != string.Empty) SetPlayerHighlight(currentHighlightUID, false);
+    }
+
     private void OnGUI()
     {
         //draw GUI only for owner (and also allow changes along with it)

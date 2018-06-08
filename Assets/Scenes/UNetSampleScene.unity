@@ -406,8 +406,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
   m_ServerBindToIP: 1
-  m_ServerBindAddress: 10.8.3.8
-  m_NetworkAddress: 10.8.3.8
+  m_ServerBindAddress: 10.8.3.4
+  m_NetworkAddress: 10.8.3.4
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
