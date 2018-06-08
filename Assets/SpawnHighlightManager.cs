@@ -8,15 +8,15 @@ public class SpawnHighlightManager : NetworkBehaviour
     
     public GameObject highLightManagerPrefab;
 
-    //only windows pc spawns highlight manager locally. 
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-
     void Start()
     {
+    //only windows pc spawns highlight manager locally. 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         if(isLocalPlayer)//without this also someone else's spawned player on win pc spawns an extra manager. we can't have that
         {
             CmdSpawnHighlightManager();
         }
+#endif
     }
 
     [Command]
@@ -26,6 +26,5 @@ public class SpawnHighlightManager : NetworkBehaviour
         NetworkServer.SpawnWithClientAuthority(manager, gameObject);
     }
 
-#endif
 
 }
