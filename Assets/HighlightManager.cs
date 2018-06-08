@@ -1,15 +1,35 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class HighlightManager : NetworkBehaviour {
 
-    [SyncVar]
+    [SyncVar(hook = "OnUIDChange")]
     public string currentHighlightUID;
+    private void OnUIDChange(string newUID)
+    {
+        SetPlayerHighlight(currentHighlightUID, false);
+        SetPlayerHighlight(newUID, true);
+        currentHighlightUID = newUID;
+
+    }
+
+    private void SetPlayerHighlight(string newUID, bool v)
+    {
+        foreach (var highlight in FindObjectsOfType<PlayerHighlight>())
+        {
+            if(highlight.GetComponent<PlayerName>().UID.Equals(newUID))
+            {
+                highlight.GetComponent<Renderer>().material.color = v ? Color.blue : Color.white;
+            }
+        }
+    }
 
     private void OnGUI()
     {
+        //draw GUI only for owner (and also allow changes along with it)
         if (!hasAuthority) return;
 
         var playerNames = FindObjectsOfType<PlayerName>();
@@ -20,6 +40,7 @@ public class HighlightManager : NetworkBehaviour {
         }
     }
 
+    /// <summary> Draw button and read input</summary>
     private void ButtonPerPlayer(PlayerName playerName, int i)
     {
         bool highlighted = playerName.UID.Equals(currentHighlightUID);
