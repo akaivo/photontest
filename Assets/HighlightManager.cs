@@ -30,7 +30,7 @@ public class HighlightManager : NetworkBehaviour {
 
     private void Start()
     {
-        SetPlayerHighlight(currentHighlightUID, true);
+        if(currentHighlightUID != string.Empty ) SetPlayerHighlight(currentHighlightUID, true);
     }
 
     private void OnGUI()
