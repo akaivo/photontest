@@ -10,8 +10,12 @@ public class SpawnHighlightManager : NetworkBehaviour
 
     void Start()
     {
+        //only windows pc spawns highlight manager locally. 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-        CmdSpawnHighlightManager();
+        if(isLocalPlayer)//without this also someone elses spawned player on win pc spawns an extra manager
+        {
+            CmdSpawnHighlightManager();
+        }
 #endif
     }
 
