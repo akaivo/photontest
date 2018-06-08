@@ -16,11 +16,16 @@ public class PlayerName : NetworkBehaviour {
     [SyncVar]
     public string UID;
 
-	void Start ()
+	public override void OnStartClient ()
     {
-        if (!isLocalPlayer) return;
-        Debug.Log("Client call CmdSetNameAndId");
-        CmdSetNameAndId(SystemInfo.deviceName, SystemInfo.deviceUniqueIdentifier);
+        if (isLocalPlayer)
+        {
+            Debug.Log("Client call CmdSetNameAndId");
+            CmdSetNameAndId(SystemInfo.deviceName, SystemInfo.deviceUniqueIdentifier);
+        } else
+        {
+            OnNameChange(deviceName);
+        }
 	}
 	
 	[Command]
