@@ -9,21 +9,25 @@ public class PlayerName : NetworkBehaviour {
     public string deviceName;
     private void OnNameChange(string newName)
     {
+        //When using a hook, variable is not automatically set.
         deviceName = newName;
         Debug.Log("Hook: " + newName);
-        gameObject.name = newName;
+        gameObject.name = "Player - " + newName;
     }
+
     [SyncVar]
     public string UID;
 
-	public override void OnStartClient ()
+	public void Start()
     {
         if (isLocalPlayer)
         {
+            //Send my data to server.
             Debug.Log("Client call CmdSetNameAndId");
             CmdSetNameAndId(SystemInfo.deviceName, SystemInfo.deviceUniqueIdentifier);
         } else
         {
+            //Hook is not called on startup automatically.
             OnNameChange(deviceName);
         }
 	}
@@ -31,18 +35,9 @@ public class PlayerName : NetworkBehaviour {
 	[Command]
 	private void CmdSetNameAndId(string newName, string newUID)
     {
+        //Server sets syncvars. Because only it can.
         Debug.Log("Server CmdSetNameAndId run. " + newName);
         deviceName = newName;
         UID = newUID;
-        //RpcSetNameAndId(newName, newUID);
 	}
-    /*
-    [ClientRpc]
-    private void RpcSetNameAndId(string newName, string newUID)
-    {
-        deviceName = newName;
-        UID = newUID;
-        Debug.LogFormat("RpcSetNameAndId; Name: {0}, UID: {1}", deviceName, UID);
-        gameObject.name = newName;
-    }*/
 }
