@@ -5,8 +5,13 @@ using UnityEngine.Networking;
 
 public class PlayerName : NetworkBehaviour {
 
-    [SyncVar]
+    [SyncVar(hook = "OnNameChange")]
     public string deviceName;
+    private void OnNameChange(string newName)
+    {
+        Debug.Log("Hook: " + newName);
+        gameObject.name = newName;
+    }
     [SyncVar]
     public string UID;
 
