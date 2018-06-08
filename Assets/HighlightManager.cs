@@ -18,11 +18,11 @@ public class HighlightManager : NetworkBehaviour {
 
     private void SetPlayerHighlight(string newUID, bool v)
     {
-        foreach (var highlight in FindObjectsOfType<PlayerHighlight>())
+        foreach (var playerIdentity in FindObjectsOfType<PlayerIdentity>())
         {
-            if(highlight.GetComponent<PlayerName>().UID.Equals(newUID))
+            if(playerIdentity.hasUID(newUID))
             {
-                highlight.GetComponent<PlayerHighlight>().Set(v);
+                playerIdentity.Set(v);
             }
         }
     }
@@ -43,7 +43,7 @@ public class HighlightManager : NetworkBehaviour {
         //draw GUI only for owner (and also allow changes along with it)
         if (!hasAuthority) return;
 
-        var playerNames = FindObjectsOfType<PlayerName>();
+        var playerNames = FindObjectsOfType<PlayerIdentity>();
         int count = playerNames.Length;
         for (int i = 0; i < count; i++)
         {
@@ -52,14 +52,14 @@ public class HighlightManager : NetworkBehaviour {
     }
 
     /// <summary> Draw button and read input</summary>
-    private void ButtonPerPlayer(PlayerName playerName, int i)
+    private void ButtonPerPlayer(PlayerIdentity playerIdentity, int i)
     {
-        bool highlighted = playerName.UID.Equals(currentHighlightUID);
+        bool highlighted = playerIdentity.hasUID(currentHighlightUID);
         GUI.color = highlighted ? Color.yellow : Color.white;
         var r = new Rect(10, 200 + 50 * i, 200, 45);
-        if (GUI.Button(r, playerName.deviceName))
+        if (GUI.Button(r, playerIdentity.GetDeviceName()))
         {
-            CmdSetHighlightUID(playerName.UID);
+            CmdSetHighlightUID(playerIdentity.GetUID());
         }
     }
 

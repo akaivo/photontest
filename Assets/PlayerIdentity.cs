@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerName : NetworkBehaviour {
+public class PlayerIdentity : NetworkBehaviour {
 
     [SyncVar(hook = "OnNameChange")]
-    public string deviceName;
+    [SerializeField]
+    private string deviceName;
     private void OnNameChange(string newName)
     {
         //When using a hook, variable is not automatically set.
@@ -16,7 +18,8 @@ public class PlayerName : NetworkBehaviour {
     }
 
     [SyncVar]
-    public string UID;
+    [SerializeField]
+    private string UID = string.Empty;
 
 	public void Start()
     {
@@ -40,4 +43,28 @@ public class PlayerName : NetworkBehaviour {
         deviceName = newName;
         UID = newUID;
 	}
+
+    [SerializeField]
+    private bool isHighlighted;
+
+    public void Set(bool value)
+    {
+        isHighlighted = value;
+        GetComponent<Renderer>().material.color = value ? Color.blue : Color.white;
+    }
+
+    public bool hasUID(string someUID)
+    {
+        return UID.Equals(someUID);
+    }
+
+    public string GetDeviceName()
+    {
+        return deviceName;
+    }
+
+    public string GetUID()
+    {
+        return UID;
+    }
 }
