@@ -9,6 +9,7 @@ public class PlayerName : NetworkBehaviour {
     public string deviceName;
     private void OnNameChange(string newName)
     {
+        deviceName = newName;
         Debug.Log("Hook: " + newName);
         gameObject.name = newName;
     }
