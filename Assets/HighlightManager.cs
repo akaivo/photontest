@@ -27,6 +27,12 @@ public class HighlightManager : NetworkBehaviour {
         }
     }
 
+
+    private void Start()
+    {
+        SetPlayerHighlight(currentHighlightUID, true);
+    }
+
     private void OnGUI()
     {
         //draw GUI only for owner (and also allow changes along with it)
