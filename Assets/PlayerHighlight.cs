@@ -9,6 +9,6 @@ public class PlayerHighlight : MonoBehaviour
     public void Set(bool value)
     {
         isHighlighted = value;
-        GetComponent<Renderer>().material.color = value ? Color.red : Color.white;
+        GetComponent<Renderer>().material.color = value ? Color.blue : Color.white;
     }
 }

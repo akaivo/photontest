@@ -22,7 +22,7 @@ public class HighlightManager : NetworkBehaviour {
         {
             if(highlight.GetComponent<PlayerName>().UID.Equals(newUID))
             {
-                highlight.GetComponent<Renderer>().material.color = v ? Color.blue : Color.white;
+                highlight.GetComponent<PlayerHighlight>().Set(v);
             }
         }
     }
