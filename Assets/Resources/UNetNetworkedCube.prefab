@@ -30,6 +30,7 @@ GameObject:
   - component: {fileID: 114691420009735498}
   - component: {fileID: 114006145822321292}
   - component: {fileID: 114736890621588192}
+  - component: {fileID: 114197775918020444}
   m_Layer: 0
   m_Name: UNetNetworkedCube
   m_TagString: Untagged
@@ -168,6 +169,19 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114197775918020444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1496515555325690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cddb765695b46774aa85c07109cc9c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highLightManagerPrefab: {fileID: 1262454054870030, guid: 565ed030b8763bd46b4a1aee25089b2b,
+    type: 2}
 --- !u!114 &114504615324451774
 MonoBehaviour:
   m_ObjectHideFlags: 1
