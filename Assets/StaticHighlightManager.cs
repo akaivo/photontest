@@ -19,7 +19,7 @@ public class StaticHighlightManager : NetworkBehaviour {
         }
     }
 
-	void Update ()
+    void Update ()
     {
 	    if(hasAuthority)
         {

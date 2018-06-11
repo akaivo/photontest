@@ -5,7 +5,15 @@ using UnityEngine.Networking;
 
 public class ManagerStealer : NetworkBehaviour {
 
-	void Update ()
+    private NetworkIdentity stealerIdentity;
+    private NetworkIdentity managerIdentity;
+
+    private void Start()
+    {
+        stealerIdentity = GetComponent<NetworkIdentity>();
+    }
+
+    void Update ()
     {
         if (!isLocalPlayer) return;
         if(Input.GetKeyDown(KeyCode.T))
@@ -17,6 +25,14 @@ public class ManagerStealer : NetworkBehaviour {
     [Command]
     private void CmdTakeManagerAuthority()
     {
-        StaticHighlightManager.Instance.GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+        managerIdentity = StaticHighlightManager.Instance.GetComponent<NetworkIdentity>();
+        managerIdentity.RemoveClientAuthority(managerIdentity.clientAuthorityOwner);
+        managerIdentity.AssignClientAuthority(stealerIdentity.connectionToClient);
+    }
+
+    private void OnDestroy()
+    {
+        //otherwise the manager gets destroyed with the owning player
+        managerIdentity.RemoveClientAuthority(managerIdentity.clientAuthorityOwner);
     }
 }
