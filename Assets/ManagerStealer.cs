@@ -11,6 +11,7 @@ public class ManagerStealer : NetworkBehaviour {
     private void Start()
     {
         stealerIdentity = GetComponent<NetworkIdentity>();
+        managerIdentity = StaticHighlightManager.Instance.GetComponent<NetworkIdentity>();
     }
 
     void Update ()
@@ -25,7 +26,6 @@ public class ManagerStealer : NetworkBehaviour {
     [Command]
     private void CmdTakeManagerAuthority()
     {
-        managerIdentity = StaticHighlightManager.Instance.GetComponent<NetworkIdentity>();
         managerIdentity.RemoveClientAuthority(managerIdentity.clientAuthorityOwner);
         managerIdentity.AssignClientAuthority(stealerIdentity.connectionToClient);
     }
