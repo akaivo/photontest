@@ -16,7 +16,7 @@ public class PlayerIdentity : NetworkBehaviour {
         gameObject.name = "Player - " + newName;
     }
 
-    [SyncVar]
+    [SyncVar(hook = "CheckHighlight")]
     [SerializeField]
     private string UID = string.Empty;
 
@@ -63,5 +63,13 @@ public class PlayerIdentity : NetworkBehaviour {
     public string GetUID()
     {
         return UID;
+    }
+
+    private void CheckHighlight(string newUID)
+    {
+        if(hasUID(FindObjectOfType<HighlightManager>().currentHighlightUID))
+        {
+            Set(true);
+        }
     }
 }
