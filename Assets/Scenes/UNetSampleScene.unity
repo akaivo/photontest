@@ -457,8 +457,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2115893463}
-  - component: {fileID: 2115893462}
   - component: {fileID: 2115893464}
+  - component: {fileID: 2115893462}
   m_Layer: 0
   m_Name: Network
   m_TagString: Untagged
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2115893461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -822479833, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 48a40c3158563474e9fd830d04b3d4c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
@@ -492,8 +492,7 @@ MonoBehaviour:
   m_PlayerSpawnMethod: 0
   m_OfflineScene: 
   m_OnlineScene: 
-  m_SpawnPrefabs:
-  - {fileID: 1262454054870030, guid: 565ed030b8763bd46b4a1aee25089b2b, type: 2}
+  m_SpawnPrefabs: []
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -536,7 +535,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 0500000000000000
+  m_Channels: 
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -549,6 +548,7 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+  staticHM: {fileID: 893816647}
 --- !u!4 &2115893463
 Transform:
   m_ObjectHideFlags: 0
