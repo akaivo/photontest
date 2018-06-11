@@ -30,9 +30,11 @@ public class ManagerStealer : NetworkBehaviour {
         managerIdentity.AssignClientAuthority(stealerIdentity.connectionToClient);
     }
 
-    private void OnDestroy()
+    public override void OnNetworkDestroy()
     {
         //otherwise the manager gets destroyed with the owning player
-        managerIdentity.RemoveClientAuthority(managerIdentity.clientAuthorityOwner);
+        if(managerIdentity.clientAuthorityOwner != null)
+            managerIdentity.RemoveClientAuthority(managerIdentity.clientAuthorityOwner);
+        base.OnNetworkDestroy();
     }
 }
