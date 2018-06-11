@@ -13,7 +13,6 @@ public class PlayerIdentity : NetworkBehaviour {
     {
         //When using a hook, variable is not automatically set.
         deviceName = newName;
-        Debug.Log("Hook: " + newName);
         gameObject.name = "Player - " + newName;
     }
 
@@ -26,7 +25,6 @@ public class PlayerIdentity : NetworkBehaviour {
         if (isLocalPlayer)
         {
             //Send my data to server.
-            Debug.Log("Client call CmdSetNameAndId");
             CmdSetNameAndId(SystemInfo.deviceName, SystemInfo.deviceUniqueIdentifier);
         } else
         {
@@ -39,7 +37,6 @@ public class PlayerIdentity : NetworkBehaviour {
 	private void CmdSetNameAndId(string newName, string newUID)
     {
         //Server sets syncvars. Because only it can.
-        Debug.Log("Server CmdSetNameAndId run. " + newName);
         deviceName = newName;
         UID = newUID;
 	}

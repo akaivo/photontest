@@ -43,6 +43,6 @@ public class StaticHighlightManager : NetworkBehaviour {
     [Command]
     private void CmdRequestAuthority()
     {
-
+        Debug.Log("set authority");
     }
 }
