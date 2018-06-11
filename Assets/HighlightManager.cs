@@ -15,7 +15,7 @@ public class HighlightManager : NetworkBehaviour {
         currentHighlightUID = newUID;
 
     }
-
+    
     private void SetPlayerHighlight(string newUID, bool v)
     {
         foreach (var playerIdentity in FindObjectsOfType<PlayerIdentity>())
