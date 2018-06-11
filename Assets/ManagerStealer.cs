@@ -26,7 +26,8 @@ public class ManagerStealer : NetworkBehaviour {
     [Command]
     private void CmdTakeManagerAuthority()
     {
-        managerIdentity.RemoveClientAuthority(managerIdentity.clientAuthorityOwner);
+        if(managerIdentity.clientAuthorityOwner != null)
+            managerIdentity.RemoveClientAuthority(managerIdentity.clientAuthorityOwner);
         managerIdentity.AssignClientAuthority(stealerIdentity.connectionToClient);
     }
 
