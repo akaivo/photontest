@@ -67,7 +67,8 @@ public class PlayerIdentity : NetworkBehaviour {
 
     private void CheckHighlight(string newUID)
     {
-        if(hasUID(FindObjectOfType<HighlightManager>().currentHighlightUID))
+        var highlightManager = FindObjectOfType<HighlightManager>();
+        if (highlightManager != null && hasUID(highlightManager.currentHighlightUID))
         {
             Set(true);
         }
