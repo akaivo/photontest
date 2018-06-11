@@ -19,30 +19,11 @@ public class StaticHighlightManager : NetworkBehaviour {
         }
     }
 
-    void Start ()
-    {
-	    	
-	}
-	
 	void Update ()
     {
-	    if(!hasAuthority)
+	    if(hasAuthority)
         {
-            ReadGrabAuthorityInput();
+            Debug.Log("Mi Mi Mi");
         }
 	}
-
-    private void ReadGrabAuthorityInput()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            CmdRequestAuthority();
-        }
-    }
-
-    [Command]
-    private void CmdRequestAuthority()
-    {
-        Debug.Log("set authority");
-    }
 }
