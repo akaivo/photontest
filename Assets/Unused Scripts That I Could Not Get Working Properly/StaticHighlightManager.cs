@@ -40,6 +40,10 @@ public class StaticHighlightManager : NetworkBehaviour {
         }
     }
 
+    public override void OnStartClient()
+    {
+        SetPlayerHighlight(currentHighlightUID, true);
+    }
 
     private void OnGUI()
     {
