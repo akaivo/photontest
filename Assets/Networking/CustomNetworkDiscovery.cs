@@ -9,7 +9,7 @@ namespace Meshicon.Networking
     public struct ExpiringBroadcastResult
     {
         public string serverAddress;
-        public byte[] broadcastData;
+        public string broadcastData;
         public DateTime expiration;
     }
 
@@ -48,7 +48,7 @@ namespace Meshicon.Networking
         byte[] m_MsgOutBuffer;
         byte[] m_MsgInBuffer;
         HostTopology m_DefaultTopology;
-        Dictionary<string, NetworkBroadcastResult> m_BroadcastsReceived = new Dictionary<string, NetworkBroadcastResult>();
+        Dictionary<string, ExpiringBroadcastResult> m_BroadcastsReceived = new Dictionary<string, ExpiringBroadcastResult>();
 
         public int broadcastPort
         {
@@ -96,7 +96,7 @@ namespace Meshicon.Networking
             set { m_HostId = value; }
         }
 
-        public Dictionary<string, NetworkBroadcastResult> BroadcastsReceived
+        public Dictionary<string, ExpiringBroadcastResult> BroadcastsReceived
         {
             get { return m_BroadcastsReceived; }
         }
@@ -252,16 +252,23 @@ namespace Meshicon.Networking
                     int senderPort;
                     NetworkTransport.GetBroadcastConnectionInfo(m_HostId, out senderAddr, out senderPort, out error);
 
-                    var recv = new NetworkBroadcastResult();
+                    var recv = new ExpiringBroadcastResult();
                     recv.serverAddress = senderAddr;
-                    recv.broadcastData = new byte[receivedSize];
-                    Buffer.BlockCopy(m_MsgInBuffer, 0, recv.broadcastData, 0, receivedSize);
+                    var byteData = new byte[receivedSize];
+                    Buffer.BlockCopy(m_MsgInBuffer, 0, byteData, 0, receivedSize);
+                    recv.broadcastData = BytesToString(byteData);
+                    recv.expiration = DateTime.Now.AddSeconds(5);
                     m_BroadcastsReceived[senderAddr] = recv;
 
                     OnReceivedBroadcast(senderAddr, BytesToString(m_MsgInBuffer));
                 }
             }
             while (networkEvent != NetworkEventType.Nothing);
+            RemoveOldReceivedBroadcasts();
+        }
+
+        private void RemoveOldReceivedBroadcasts()
+        {
         }
 
         void OnDestroy()
