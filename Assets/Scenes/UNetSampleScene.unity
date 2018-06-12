@@ -384,8 +384,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2115893463}
-  - component: {fileID: 2115893464}
   - component: {fileID: 2115893462}
+  - component: {fileID: 2115893465}
+  - component: {fileID: 2115893466}
+  - component: {fileID: 2115893464}
   m_Layer: 0
   m_Name: Network
   m_TagString: Untagged
@@ -401,13 +403,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2115893461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 227461547, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: aac6b6ab7e544274ab50be2d5f038125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
+  manager: {fileID: 2115893465}
 --- !u!4 &2115893463
 Transform:
   m_ObjectHideFlags: 0
@@ -429,13 +428,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2115893461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -822479833, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 2625b5bd1ea616146bfb05118797b96b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  discovery: {fileID: 2115893466}
+--- !u!114 &2115893465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2115893461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df396d033cdb2ac498e996655cd3605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
-  m_ServerBindToIP: 1
-  m_ServerBindAddress: 10.8.3.8
-  m_NetworkAddress: 10.8.3.8
+  m_ServerBindToIP: 0
+  m_ServerBindAddress: 
+  m_NetworkAddress: localhost
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
@@ -504,3 +515,25 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+  discovery: {fileID: 2115893466}
+--- !u!114 &2115893466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2115893461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72118aeff5706574c94e995f1c568ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BroadcastPort: 47777
+  m_BroadcastKey: 1234
+  m_BroadcastVersion: 1
+  m_BroadcastSubVersion: 1
+  m_BroadcastInterval: 1000
+  m_UseNetworkManager: 0
+  m_BroadcastData: HELLO
+  m_ShowGUI: 0
+  m_OffsetX: 0
+  m_OffsetY: 0
