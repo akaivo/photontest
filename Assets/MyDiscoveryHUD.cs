@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Meshicon.Networking;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[RequireComponent(typeof(NetworkDiscovery))]
+[RequireComponent(typeof(CustomNetworkDiscovery))]
 public class MyDiscoveryHUD : MonoBehaviour {
 
     private bool listening;
-    public NetworkDiscovery discovery;
+    public CustomNetworkDiscovery discovery;
 
     private void OnGUI()
     {
@@ -23,7 +24,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void ShowAvailableSessions()
     {
-        var broadcasts = discovery.broadcastsReceived;
+        var broadcasts = discovery.BroadcastsReceived;
         int i = 0;
         foreach (var kvpair in broadcasts)
         {
@@ -53,20 +54,17 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void StartListening()
     {
-        if (discovery.running) discovery.StopBroadcast();
-        discovery.isServer = false;
-        discovery.isClient = true;
+        if (discovery.Running) discovery.StopBroadcast();
         discovery.Initialize();
-        //discovery.StartAsClient();
+        discovery.StartAsClient();
         listening = true;
     }
 
     private void StartBroadcasting()
     {
-        if (discovery.running) discovery.StopBroadcast();
-        discovery.isServer = true;
-        discovery.isClient = false;
+        if (discovery.Running) discovery.StopBroadcast();
         discovery.Initialize();
+        discovery.StartAsServer();
         listening = false;
     }
 }

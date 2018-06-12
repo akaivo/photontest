@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Meshicon.Networking;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.Networking;
 
 public class MyNetworkManager : NetworkManager {
 
-    public NetworkDiscovery discovery;
+    public CustomNetworkDiscovery discovery;
     private bool isHosting;
 
     void Start ()
@@ -36,12 +37,10 @@ public class MyNetworkManager : NetworkManager {
 
     private void StartBroadcasting(string deviceName, int networkPort)
     {
-        if(discovery.running) discovery.StopBroadcast();
+        if(discovery.Running) discovery.StopBroadcast();
         discovery.broadcastData = deviceName + ":port:" + networkPort;
-        discovery.isClient = false;
-        discovery.isServer = true;
         discovery.Initialize();
-        //discovery.StartAsServer();
+        discovery.StartAsServer();
     }
 
 }
