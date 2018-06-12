@@ -53,7 +53,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void StartListening()
     {
-        discovery.StopBroadcast();
+        if (discovery.running) discovery.StopBroadcast();
         discovery.isServer = false;
         discovery.isClient = true;
         discovery.Initialize();
@@ -63,7 +63,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void StartBroadcasting()
     {
-        discovery.StopBroadcast();
+        if (discovery.running) discovery.StopBroadcast();
         discovery.isServer = true;
         discovery.isClient = false;
         discovery.Initialize();
