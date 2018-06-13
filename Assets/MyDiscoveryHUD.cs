@@ -73,6 +73,12 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void ShowAvailableSessions()
     {
+
+        if (GUI.Button(GetNextRect(), "Cancel"))
+        {
+            StartBroadcasting(SystemInfo.deviceName, manager.networkPort);
+        };
+
         var broadcasts = discovery.BroadcastsReceived;
         foreach (var broadcast in broadcasts.Values)
         {
@@ -85,10 +91,6 @@ public class MyDiscoveryHUD : MonoBehaviour {
             };
         }
 
-        if (GUI.Button(GetNextRect(), "Cancel"))
-        {
-            StartBroadcasting(SystemInfo.deviceName, manager.networkPort);
-        };
     }
 
     private void ShowJoinOtherButton()
