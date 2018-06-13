@@ -39,7 +39,10 @@ public class MyNetworkManager : NetworkManager {
         }
         networkAddress = "localhost";
         serverBindToIP = true;
-        StartHost();
+        while(StartHost() == null)
+        {
+            networkPort++;
+        }
     }
 
     public void JoinGameAt(string ip, int port)
