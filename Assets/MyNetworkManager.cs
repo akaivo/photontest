@@ -27,6 +27,7 @@ public class MyNetworkManager : NetworkManager {
 
     public override void OnStartServer()
     {
+        Debug.Log("OnStartServer");
         m_isHosting = true;
         StartBroadcasting(SystemInfo.deviceName, networkPort);
         base.OnStartServer();
@@ -34,32 +35,20 @@ public class MyNetworkManager : NetworkManager {
 
     public override void OnStopServer()
     {
+        Debug.Log("OnStopServer");
         m_isHosting = false;
+        StopBroadcasting();
         base.OnStopServer();
     }
 
     public void ConnectTo(string ip, int port)
     {
         if (m_isHosting) StopHost();
-        StopBroadcasting();
         networkAddress = ip;
         networkPort = port;
         serverBindAddress = ip;
         serverBindToIP = true;
         StartClient();
-    }
-
-    public override void OnStartClient(NetworkClient client)
-    {
-        if (discovery.Running) discovery.StopBroadcast();
-        m_isClient = true;
-        base.OnStartClient(client);
-    }
-
-    public override void OnStopClient()
-    {
-        m_isClient = false;
-        base.OnStopClient();
     }
 
     private void StartBroadcasting(string deviceName, int networkPort)

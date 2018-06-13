@@ -39,8 +39,6 @@ public class SendRateChanger : NetworkBehaviour
         SendRate = newSendRate;
         GetComponent<NetworkTransform>().sendInterval = 1f / newSendRate;
 
-        Debug.Log("Network transform sendrate changed: " + newSendRate);
-        Debug.Log("Network transform sendInterval changed: " + GetComponent<NetworkTransform>().sendInterval);
         if (OnSendRateChange != null)
         {
             OnSendRateChange(newSendRate, GetComponent<NetworkTransform>().sendInterval);
