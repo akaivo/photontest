@@ -42,44 +42,6 @@ public class MyNetworkManager : NetworkManager {
         StartHost();
     }
 
-    public void Disconnect()
-    {
-        if(IsPureClient)
-        {
-            StopClient();
-        }
-    }
-
-    public override void OnStartServer()
-    {
-        m_isServer = true;
-        StartBroadcasting(SystemInfo.deviceName, networkPort);
-        base.OnStartServer();
-    }
-
-    public override void OnStopServer()
-    {
-        m_isServer = false;
-        StopBroadcasting();
-        base.OnStopServer();
-    }
-
-    public override void OnStartClient(NetworkClient client)
-    {
-        Debug.Log("OnStartClient");
-        m_isClient = true;
-        m_isPureClient = !m_isServer;
-        base.OnStartClient(client);
-    }
-
-    public override void OnStopClient()
-    {
-        Debug.Log("OnsStopClient");
-        m_isClient = false;
-        m_isPureClient = false;
-        base.OnStopClient();
-    }
-
     public void JoinGameAt(string ip, int port)
     {
         if(IsPureClient)
@@ -98,16 +60,37 @@ public class MyNetworkManager : NetworkManager {
         StartClient();
     }
 
-    private void StartBroadcasting(string deviceName, int networkPort)
+    public void Disconnect()
     {
-        if(discovery.Running) discovery.StopBroadcast();
-        discovery.BroadcastData = deviceName + ":port:" + networkPort;
-        discovery.StartAsServer();
+        if(IsPureClient)
+        {
+            StopClient();
+        }
     }
 
-    private void StopBroadcasting()
+    public override void OnStartServer()
     {
-        if (discovery.Running) discovery.StopBroadcast();
+        m_isServer = true;
+        base.OnStartServer();
     }
 
+    public override void OnStopServer()
+    {
+        m_isServer = false;
+        base.OnStopServer();
+    }
+
+    public override void OnStartClient(NetworkClient client)
+    {
+        m_isClient = true;
+        m_isPureClient = !m_isServer;
+        base.OnStartClient(client);
+    }
+
+    public override void OnStopClient()
+    {
+        m_isClient = false;
+        m_isPureClient = false;
+        base.OnStopClient();
+    }
 }

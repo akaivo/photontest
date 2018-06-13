@@ -9,9 +9,16 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(CustomNetworkDiscovery))]
 public class MyDiscoveryHUD : MonoBehaviour {
 
-    private bool listening;
     public CustomNetworkDiscovery discovery;
     public MyNetworkManager manager;
+
+    private enum DiscoveryState
+    {
+        Stopped,
+        Listening,
+        Broadcasting
+    }
+    private DiscoveryState state = DiscoveryState.Stopped;
 
     private void OnGUI()
     {
@@ -21,19 +28,34 @@ public class MyDiscoveryHUD : MonoBehaviour {
         }
         else
         {
-            if(listening)
-            {
-                ShowAvailableSessions();
-            } else
-            {
-                ShowJoinOtherButton();
-            }
             if(!manager.IsHosting)
             {
                 if (GUI.Button(new Rect(10, 10 + 300, 200, 45), "Host"))
                 {
                     manager.StartHosting();
                 };
+            }
+            switch (state)
+            {
+                case DiscoveryState.Stopped:
+                    {
+                        if(manager.IsHosting && !discovery.Running)
+                            StartBroadcasting(SystemInfo.deviceName, manager.networkPort);
+                        ShowJoinOtherButton();
+                    }
+                    break;
+                case DiscoveryState.Listening:
+                    {
+                        ShowAvailableSessions();
+                    }
+                    break;
+                case DiscoveryState.Broadcasting:
+                    {
+                        ShowJoinOtherButton();
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -51,15 +73,15 @@ public class MyDiscoveryHUD : MonoBehaviour {
             if (GUI.Button(r, kvpair.Value.broadcastData.ToString()))
             {
                 manager.JoinGameAt(kvpair.Value.serverAddress, port);
-                listening = false;
-                break;
+                StopBroadcasting();
+                break;//dictionary gets cleared through JoinGameAt causing foreach to throw exception if loop continues
             };
             i++;
         }
 
         if (GUI.Button(new Rect(10, 10 + 50 * i, 200, 45), "Cancel"))
         {
-            StartBroadcasting();
+            StartBroadcasting(SystemInfo.deviceName, manager.networkPort);
         };
     }
 
@@ -83,14 +105,22 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void StartListening()
     {
-        if (discovery.Running) discovery.StopBroadcast();
-        listening = discovery.StartAsClient();
+        StopBroadcasting();
+        bool listening = discovery.StartAsClient();
+        state = listening ? DiscoveryState.Listening : DiscoveryState.Stopped;
     }
 
-    private void StartBroadcasting()
+    private void StartBroadcasting(string deviceName, int networkPort)
+    {
+        StopBroadcasting();
+        discovery.BroadcastData = deviceName + ":port:" + networkPort;
+        bool broadcasting = discovery.StartAsServer();
+        state = broadcasting ? DiscoveryState.Broadcasting: DiscoveryState.Stopped;
+    }
+
+    private void StopBroadcasting()
     {
         if (discovery.Running) discovery.StopBroadcast();
-        listening = false;
-        discovery.StartAsServer();
+        state = DiscoveryState.Stopped;
     }
 }
