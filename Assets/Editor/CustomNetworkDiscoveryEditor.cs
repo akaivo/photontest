@@ -18,6 +18,7 @@ namespace Meshicon.Networking
         SerializedProperty m_BroadcastVersionProperty;
         SerializedProperty m_BroadcastSubVersionProperty;
         SerializedProperty m_BroadcastIntervalProperty;
+        SerializedProperty m_ReceivedBroadcastLifetimeProperty;
         SerializedProperty m_BroadcastDataProperty;
 
         GUIContent m_BroadcastPortLabel;
@@ -25,6 +26,7 @@ namespace Meshicon.Networking
         GUIContent m_BroadcastVersionLabel;
         GUIContent m_BroadcastSubVersionLabel;
         GUIContent m_BroadcastIntervalLabel;
+        GUIContent m_ReceivedBroadcastLifetimeLabel;
         GUIContent m_BroadcastDataLabel;
 
         void Init()
@@ -48,6 +50,7 @@ namespace Meshicon.Networking
             m_BroadcastVersionProperty = serializedObject.FindProperty("m_BroadcastVersion");
             m_BroadcastSubVersionProperty = serializedObject.FindProperty("m_BroadcastSubVersion");
             m_BroadcastIntervalProperty = serializedObject.FindProperty("m_BroadcastInterval");
+            m_ReceivedBroadcastLifetimeProperty = serializedObject.FindProperty("m_receivedBroadCastLifetime");
             m_BroadcastDataProperty = serializedObject.FindProperty("m_BroadcastData");
 
             m_BroadcastPortLabel = new GUIContent("Broadcast Port", "The network port to broadcast to, and listen on.");
@@ -55,6 +58,7 @@ namespace Meshicon.Networking
             m_BroadcastVersionLabel = new GUIContent("Broadcast Version", "The version of the application to broadcast. This is used to match versions of the same application.");
             m_BroadcastSubVersionLabel = new GUIContent("Broadcast SubVersion", "The sub-version of the application to broadcast.");
             m_BroadcastIntervalLabel = new GUIContent("Broadcast Interval", "How often in milliseconds to broadcast when running as a server.");
+            m_ReceivedBroadcastLifetimeLabel = new GUIContent("Received BC Lifetime", "How many seconds to keep the broadcast in the broadcast dictionary after last receive.");
             m_BroadcastDataLabel = new GUIContent("Broadcast Data", "The data to broadcast when not using the NetworkManager");
         }
 
@@ -78,6 +82,7 @@ namespace Meshicon.Networking
             EditorGUILayout.PropertyField(m_BroadcastVersionProperty, m_BroadcastVersionLabel);
             EditorGUILayout.PropertyField(m_BroadcastSubVersionProperty, m_BroadcastSubVersionLabel);
             EditorGUILayout.PropertyField(m_BroadcastIntervalProperty, m_BroadcastIntervalLabel);
+            EditorGUILayout.PropertyField(m_ReceivedBroadcastLifetimeProperty, m_ReceivedBroadcastLifetimeLabel);
             EditorGUILayout.PropertyField(m_BroadcastDataProperty, m_BroadcastDataLabel);
 
             EditorGUILayout.Separator();

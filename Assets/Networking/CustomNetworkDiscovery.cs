@@ -37,6 +37,9 @@ namespace Meshicon.Networking
         int m_BroadcastInterval = 1000;
 
         [SerializeField]
+        int m_receivedBroadCastLifetime = 5;
+
+        [SerializeField]
         string m_BroadcastData = "HELLO";
 
         // runtime data
@@ -82,6 +85,13 @@ namespace Meshicon.Networking
             get { return m_BroadcastInterval; }
             set { m_BroadcastInterval = value; }
         }
+
+        public int ReceivedBroadCastLifetime
+        {
+            get { return m_receivedBroadCastLifetime; }
+            set { m_receivedBroadCastLifetime = value; }
+        }
+        
 
         public string BroadcastData
         {
@@ -281,7 +291,7 @@ namespace Meshicon.Networking
                 {
                     serverAddress = senderAddrIPv4,
                     broadcastData = data,
-                    expiration = DateTime.Now.AddSeconds(3)
+                    expiration = DateTime.Now.AddSeconds(m_receivedBroadCastLifetime)
                 };
 
                 m_BroadcastsReceived[senderAddrIPv4] = recv;
