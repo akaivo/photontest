@@ -15,12 +15,19 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void OnGUI()
     {
-        if(listening)
+        if(manager.IsPureClient)
         {
-            ShowAvailableSessions();
-        } else
+            ShowDisconnectButton();
+        }
+        else
         {
-            ShowJoinOtherButton();
+            if(listening)
+            {
+                ShowAvailableSessions();
+            } else
+            {
+                ShowJoinOtherButton();
+            }
         }
     }
 
@@ -38,7 +45,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
             if (GUI.Button(r, kvpair.Value.broadcastData.ToString()))
             {
                 Debug.LogFormat("Connect to IP:{0}, port: {1}, computer: {2}", kvpair.Value.serverAddress, port, computer);
-                manager.ConnectTo(kvpair.Value.serverAddress, port);
+                manager.JoinGameAt(kvpair.Value.serverAddress, port);
                 listening = false;
             };
             i++;
@@ -56,6 +63,15 @@ public class MyDiscoveryHUD : MonoBehaviour {
         if (GUI.Button(r, "Join Other Session"))
         {
             StartListening();
+        };
+    }
+
+    private void ShowDisconnectButton()
+    {
+        var r = new Rect(10, 10, 200, 45);
+        if (GUI.Button(r, "Join Other Session"))
+        {
+            manager.Disconnect();
         };
     }
 
