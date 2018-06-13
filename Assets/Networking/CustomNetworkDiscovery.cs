@@ -281,7 +281,7 @@ namespace Meshicon.Networking
                 {
                     serverAddress = senderAddrIPv4,
                     broadcastData = data,
-                    expiration = DateTime.Now.AddSeconds(5)
+                    expiration = DateTime.Now.AddSeconds(3)
                 };
 
                 m_BroadcastsReceived[senderAddrIPv4] = recv;
@@ -294,6 +294,18 @@ namespace Meshicon.Networking
 
         private void RemoveOldReceivedBroadcasts()
         {
+            HashSet<string> expiredKeys = new HashSet<string>();
+
+            foreach (var pair in m_BroadcastsReceived)
+            {
+                if (pair.Value.expiration <= DateTime.Now)
+                    expiredKeys.Add(pair.Key);
+            }
+
+            foreach (var expiredKey in expiredKeys)
+            {
+                m_BroadcastsReceived.Remove(expiredKey);
+            }
         }
 
         void OnDestroy()

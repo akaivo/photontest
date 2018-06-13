@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -10,6 +11,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private bool listening;
     public CustomNetworkDiscovery discovery;
+    public MyNetworkManager manager;
 
     private void OnGUI()
     {
@@ -30,9 +32,13 @@ public class MyDiscoveryHUD : MonoBehaviour {
         {
             Debug.Log(kvpair.Key + ":" + kvpair.Value);
             var r = new Rect(10, 10 + 50 * i, 200, 45);
+            string broadcastData = kvpair.Value.broadcastData;
+            int port = int.Parse(broadcastData.Split(':').Last());
+            string computer = broadcastData.Split(':').First();
             if (GUI.Button(r, kvpair.Value.broadcastData.ToString()))
             {
-                Debug.Log("Clicked: " + kvpair.Key + ":" + kvpair.Value);
+                Debug.LogFormat("Connect to IP:{0}, port: {1}, computer: {2}", kvpair.Value.serverAddress, port, computer);
+                manager.ConnectTo(kvpair.Value.serverAddress, port);
             };
             i++;
         }

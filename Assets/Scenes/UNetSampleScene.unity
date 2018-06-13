@@ -406,6 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   discovery: {fileID: 2115893464}
+  manager: {fileID: 2115893465}
 --- !u!4 &2115893463
 Transform:
   m_ObjectHideFlags: 0
@@ -520,3 +521,5 @@ MonoBehaviour:
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   discovery: {fileID: 2115893464}
+  m_isHosting: 0
+  m_isClient: 0
