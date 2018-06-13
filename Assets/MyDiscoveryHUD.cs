@@ -13,7 +13,9 @@ public class MyDiscoveryHUD : MonoBehaviour {
     public MyNetworkManager manager;
 
     private float xpos, ypos;
-    private float spacing = 50f;
+    private float height = 45;
+    private float spacing = 5f;
+    private string customAddress, customPort;
 
     private enum DiscoveryState
     {
@@ -23,6 +25,11 @@ public class MyDiscoveryHUD : MonoBehaviour {
     }
     private DiscoveryState state = DiscoveryState.Stopped;
 
+    private void Start()
+    {
+        customAddress = manager.networkAddress;
+        customPort = manager.networkPort.ToString();
+    }
     private void OnGUI()
     {
         xpos = 10f;
@@ -61,6 +68,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
                     break;
             }
         }
+        
     }
 
     private void ShowHostButton()
@@ -82,15 +90,25 @@ public class MyDiscoveryHUD : MonoBehaviour {
         var broadcasts = discovery.BroadcastsReceived;
         foreach (var broadcast in broadcasts.Values)
         {
-            int port = ExtractPort(broadcast.broadcastData);
-            if (GUI.Button(GetNextRect(), broadcast.broadcastData.ToString()))
+            if (GUI.Button(GetNextRect(), ExtractComputerName(broadcast.broadcastData)))
             {
-                manager.JoinGameAt(broadcast.serverAddress, port);
+                manager.JoinGameAt(broadcast.serverAddress, ExtractPort(broadcast.broadcastData));
                 StopBroadcasting();
                 break;//dictionary gets cleared through JoinGameAt causing foreach to throw exception if loop continues
             };
         }
 
+        ShowCustomSession();
+    }
+
+    private void ShowCustomSession()
+    {
+        customAddress = GUI.TextField(GetNextNarrowRect(), customAddress, 15);
+        customPort = GUI.TextField(GetNextNarrowRect(), customPort, 15);
+        if (GUI.Button(GetNextNarrowRect(), "Join"))
+        {
+            manager.JoinGameAt(customAddress, int.Parse(customPort));
+        };
     }
 
     private void ShowJoinOtherButton()
@@ -132,13 +150,26 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private Rect GetNextRect()
     {
-        Rect r = new Rect(xpos, ypos, 200, 45);
-        ypos += spacing;
+        Rect r = new Rect(xpos, ypos, 200, height);
+        ypos += height + spacing;
         return r;
     }
+
+    private Rect GetNextNarrowRect()
+    {
+        Rect r = new Rect(xpos, ypos, 200, height / 2f);
+        ypos += height / 2f + spacing;
+        return r;
+    }
+
 
     private static int ExtractPort(string broadcastData)
     {
         return int.Parse(broadcastData.Split(':').Last());
+    }
+
+    private static string ExtractComputerName(string broadcastData)
+    {
+        return broadcastData.Split(':').First();
     }
 }
