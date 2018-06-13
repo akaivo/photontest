@@ -39,6 +39,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
             {
                 Debug.LogFormat("Connect to IP:{0}, port: {1}, computer: {2}", kvpair.Value.serverAddress, port, computer);
                 manager.ConnectTo(kvpair.Value.serverAddress, port);
+                listening = false;
             };
             i++;
         }

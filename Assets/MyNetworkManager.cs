@@ -41,6 +41,7 @@ public class MyNetworkManager : NetworkManager {
     public void ConnectTo(string ip, int port)
     {
         if (m_isHosting) StopHost();
+        StopBroadcasting();
         networkAddress = ip;
         networkPort = port;
         serverBindAddress = ip;
@@ -66,6 +67,11 @@ public class MyNetworkManager : NetworkManager {
         if(discovery.Running) discovery.StopBroadcast();
         discovery.BroadcastData = deviceName + ":port:" + networkPort;
         discovery.StartAsServer();
+    }
+
+    private void StopBroadcasting()
+    {
+        if (discovery.Running) discovery.StopBroadcast();
     }
 
 }
