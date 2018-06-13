@@ -28,6 +28,13 @@ public class MyDiscoveryHUD : MonoBehaviour {
             {
                 ShowJoinOtherButton();
             }
+            if(!manager.IsHosting)
+            {
+                if (GUI.Button(new Rect(10, 10 + 300, 200, 45), "Host"))
+                {
+                    manager.StartHosting();
+                };
+            }
         }
     }
 
@@ -45,6 +52,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
             {
                 manager.JoinGameAt(kvpair.Value.serverAddress, port);
                 listening = false;
+                break;
             };
             i++;
         }

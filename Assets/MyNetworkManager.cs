@@ -15,9 +15,9 @@ public class MyNetworkManager : NetworkManager {
     [SerializeField]
     private bool m_isPureClient;
 
-    public bool IsServer
+    public bool IsHosting
     {
-        get { return m_isServer; }
+        get { return m_isServer && m_isClient; }
     }
 
     public bool IsPureClient
@@ -27,10 +27,10 @@ public class MyNetworkManager : NetworkManager {
 
     void Start ()
     {
-        SwitchToHosting();
+        StartHosting();
 	}
 	
-    public void SwitchToHosting()
+    public void StartHosting()
     {
         if (m_isServer)
         {
@@ -52,7 +52,6 @@ public class MyNetworkManager : NetworkManager {
 
     public override void OnStartServer()
     {
-        Debug.Log("OnStartServer");
         m_isServer = true;
         StartBroadcasting(SystemInfo.deviceName, networkPort);
         base.OnStartServer();
@@ -60,7 +59,6 @@ public class MyNetworkManager : NetworkManager {
 
     public override void OnStopServer()
     {
-        Debug.Log("OnStopServer");
         m_isServer = false;
         StopBroadcasting();
         base.OnStopServer();
@@ -77,7 +75,6 @@ public class MyNetworkManager : NetworkManager {
     public override void OnStopClient()
     {
         Debug.Log("OnsStopClient");
-        if(m_isPureClient) SwitchToHosting();
         m_isClient = false;
         m_isPureClient = false;
         base.OnStopClient();
