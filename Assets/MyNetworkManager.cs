@@ -12,6 +12,9 @@ public class MyNetworkManager : NetworkManager {
     private bool m_isServer;
     [SerializeField]
     private bool m_isClient;
+    [SerializeField]
+    private bool m_isPureClient;
+
     public bool IsServer
     {
         get { return m_isServer; }
@@ -19,7 +22,7 @@ public class MyNetworkManager : NetworkManager {
 
     public bool IsPureClient
     {
-        get { return m_isClient && !m_isServer; }
+        get { return m_isPureClient; }
     }
 
     void Start ()
@@ -65,19 +68,24 @@ public class MyNetworkManager : NetworkManager {
 
     public override void OnStartClient(NetworkClient client)
     {
+        Debug.Log("OnStartClient");
         m_isClient = true;
+        m_isPureClient = !m_isServer;
         base.OnStartClient(client);
     }
 
     public override void OnStopClient()
     {
+        Debug.Log("OnsStopClient");
+        if(m_isPureClient) SwitchToHosting();
         m_isClient = false;
+        m_isPureClient = false;
         base.OnStopClient();
     }
 
     public void JoinGameAt(string ip, int port)
     {
-        if(m_isClient)
+        if(IsPureClient)
         {
             Debug.LogError("Already a client");
             return;
@@ -90,8 +98,6 @@ public class MyNetworkManager : NetworkManager {
 
         networkAddress = ip;
         networkPort = port;
-        serverBindAddress = ip;
-        serverBindToIP = true;
         StartClient();
     }
 

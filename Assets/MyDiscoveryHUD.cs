@@ -37,14 +37,12 @@ public class MyDiscoveryHUD : MonoBehaviour {
         int i = 0;
         foreach (var kvpair in broadcasts)
         {
-            Debug.Log(kvpair.Key + ":" + kvpair.Value);
             var r = new Rect(10, 10 + 50 * i, 200, 45);
             string broadcastData = kvpair.Value.broadcastData;
             int port = int.Parse(broadcastData.Split(':').Last());
             string computer = broadcastData.Split(':').First();
             if (GUI.Button(r, kvpair.Value.broadcastData.ToString()))
             {
-                Debug.LogFormat("Connect to IP:{0}, port: {1}, computer: {2}", kvpair.Value.serverAddress, port, computer);
                 manager.JoinGameAt(kvpair.Value.serverAddress, port);
                 listening = false;
             };
@@ -69,7 +67,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
     private void ShowDisconnectButton()
     {
         var r = new Rect(10, 10, 200, 45);
-        if (GUI.Button(r, "Join Other Session"))
+        if (GUI.Button(r, "Disconnect"))
         {
             manager.Disconnect();
         };
