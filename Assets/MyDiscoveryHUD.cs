@@ -55,16 +55,13 @@ public class MyDiscoveryHUD : MonoBehaviour {
     private void StartListening()
     {
         if (discovery.Running) discovery.StopBroadcast();
-        discovery.Initialize();
-        discovery.StartAsClient();
-        listening = true;
+        listening = discovery.StartAsClient();
     }
 
     private void StartBroadcasting()
     {
         if (discovery.Running) discovery.StopBroadcast();
-        discovery.Initialize();
-        discovery.StartAsServer();
         listening = false;
+        discovery.StartAsServer();
     }
 }

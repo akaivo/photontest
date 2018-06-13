@@ -90,7 +90,7 @@ namespace Meshicon.Networking
             if (Application.isPlaying)
             {
                 EditorGUILayout.Separator();
-                EditorGUILayout.LabelField("Host Id", m_Discovery.hostId.ToString());
+                EditorGUILayout.LabelField("Host Id", m_Discovery.HostId.ToString());
                 EditorGUILayout.LabelField("Running", m_Discovery.Running.ToString());
                 EditorGUILayout.LabelField("Is Server", m_Discovery.IsServer.ToString());
                 EditorGUILayout.LabelField("Is Client", m_Discovery.IsClient.ToString());

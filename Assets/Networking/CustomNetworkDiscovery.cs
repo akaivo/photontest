@@ -17,6 +17,7 @@ namespace Meshicon.Networking
     [AddComponentMenu("Meshicon/CustomNetworkDiscovery")]
     public class CustomNetworkDiscovery : MonoBehaviour
     {
+        #region private_fields
         const int k_MaxBroadcastMsgSize = 1024;
 
         // config data
@@ -40,47 +41,49 @@ namespace Meshicon.Networking
 
         // runtime data
         int m_HostId = -1;
-        public bool Running { get; private set; }
-
-        public bool IsServer { get; private set; }
-        public bool IsClient { get; private set; }
 
         byte[] m_MsgOutBuffer;
         byte[] m_MsgInBuffer;
         HostTopology m_DefaultTopology;
         Dictionary<string, ExpiringBroadcastResult> m_BroadcastsReceived = new Dictionary<string, ExpiringBroadcastResult>();
+        #endregion
 
-        public int broadcastPort
+        #region properties
+        public bool Running { get; private set; }
+        public bool IsServer { get; private set; }
+        public bool IsClient { get; private set; }
+
+        public int BroadcastPort
         {
             get { return m_BroadcastPort; }
             set { m_BroadcastPort = value; }
         }
 
-        public int broadcastKey
+        public int BroadcastKey
         {
             get { return m_BroadcastKey; }
             set { m_BroadcastKey = value; }
         }
 
-        public int broadcastVersion
+        public int BroadcastVersion
         {
             get { return m_BroadcastVersion; }
             set { m_BroadcastVersion = value; }
         }
 
-        public int broadcastSubVersion
+        public int BroadcastSubVersion
         {
             get { return m_BroadcastSubVersion; }
             set { m_BroadcastSubVersion = value; }
         }
 
-        public int broadcastInterval
+        public int BroadcastInterval
         {
             get { return m_BroadcastInterval; }
             set { m_BroadcastInterval = value; }
         }
 
-        public string broadcastData
+        public string BroadcastData
         {
             get { return m_BroadcastData; }
             set
@@ -90,7 +93,7 @@ namespace Meshicon.Networking
             }
         }
 
-        public int hostId
+        public int HostId
         {
             get { return m_HostId; }
             set { m_HostId = value; }
@@ -100,6 +103,7 @@ namespace Meshicon.Networking
         {
             get { return m_BroadcastsReceived; }
         }
+        #endregion
 
         static byte[] StringToBytes(string str)
         {
@@ -115,11 +119,11 @@ namespace Meshicon.Networking
             return new string(chars);
         }
 
-        public bool Initialize()
+        private bool Initialize()
         {
             if (m_BroadcastData.Length >= k_MaxBroadcastMsgSize)
             {
-                if (LogFilter.logError) { Debug.LogError("NetworkDiscovery Initialize - data too large. max is " + k_MaxBroadcastMsgSize); }
+                Debug.LogError("NetworkDiscovery Initialize - data too large. max is " + k_MaxBroadcastMsgSize);
                 return false;
             }
 
@@ -147,6 +151,8 @@ namespace Meshicon.Networking
                 if (LogFilter.logWarn) { Debug.LogWarning("NetworkDiscovery StartAsClient already started"); }
                 return false;
             }
+
+            Initialize();
 
             if (m_MsgInBuffer == null)
             {
@@ -179,6 +185,8 @@ namespace Meshicon.Networking
                 return false;
             }
 
+            Initialize();
+
             m_HostId = NetworkTransport.AddHost(m_DefaultTopology, 0);
             if (m_HostId == -1)
             {
@@ -202,17 +210,18 @@ namespace Meshicon.Networking
 
         public void StopBroadcast()
         {
+            if (!Running)
+            {
+                Debug.LogWarning("NetworkDiscovery StopBroadcast not started");
+                return;
+            }
+
             if (m_HostId == -1)
             {
                 if (LogFilter.logError) { Debug.LogError("NetworkDiscovery StopBroadcast not initialized"); }
                 return;
             }
 
-            if (!Running)
-            {
-                Debug.LogWarning("NetworkDiscovery StopBroadcast not started");
-                return;
-            }
             if (IsServer)
             {
                 NetworkTransport.StopBroadcastDiscovery();
@@ -224,6 +233,7 @@ namespace Meshicon.Networking
             IsServer = false;
             IsClient = false;
             m_MsgInBuffer = null;
+            m_BroadcastsReceived.Clear();
             if (LogFilter.logDebug) { Debug.Log("Stopped Discovery broadcasting"); }
         }
 
@@ -238,33 +248,48 @@ namespace Meshicon.Networking
             NetworkEventType networkEvent;
             do
             {
-                int connectionId;
-                int channelId;
-                int receivedSize;
-                byte error;
-                networkEvent = NetworkTransport.ReceiveFromHost(m_HostId, out connectionId, out channelId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
-
-                if (networkEvent == NetworkEventType.BroadcastEvent)
-                {
-                    NetworkTransport.GetBroadcastConnectionMessage(m_HostId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
-
-                    string senderAddr;
-                    int senderPort;
-                    NetworkTransport.GetBroadcastConnectionInfo(m_HostId, out senderAddr, out senderPort, out error);
-
-                    var recv = new ExpiringBroadcastResult();
-                    recv.serverAddress = senderAddr;
-                    var byteData = new byte[receivedSize];
-                    Buffer.BlockCopy(m_MsgInBuffer, 0, byteData, 0, receivedSize);
-                    recv.broadcastData = BytesToString(byteData);
-                    recv.expiration = DateTime.Now.AddSeconds(5);
-                    m_BroadcastsReceived[senderAddr] = recv;
-
-                    OnReceivedBroadcast(senderAddr, BytesToString(m_MsgInBuffer));
-                }
+                networkEvent = ProcessNetworkEvent();
             }
             while (networkEvent != NetworkEventType.Nothing);
             RemoveOldReceivedBroadcasts();
+        }
+
+        private NetworkEventType ProcessNetworkEvent()
+        {
+            NetworkEventType networkEvent;
+            int connectionId;
+            int channelId;
+            int receivedSize;
+            byte error;
+            networkEvent = NetworkTransport.ReceiveFromHost(m_HostId, out connectionId, out channelId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
+
+            if (networkEvent == NetworkEventType.BroadcastEvent)
+            {
+                NetworkTransport.GetBroadcastConnectionMessage(m_HostId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
+
+                string senderAddr;
+                int senderPort;
+                NetworkTransport.GetBroadcastConnectionInfo(m_HostId, out senderAddr, out senderPort, out error);
+
+                string senderAddrIPv4 = senderAddr.Substring(senderAddr.LastIndexOf(':') + 1);
+
+                var byteData = new byte[receivedSize];
+                Buffer.BlockCopy(m_MsgInBuffer, 0, byteData, 0, receivedSize);
+                string data = BytesToString(byteData);
+
+                var recv = new ExpiringBroadcastResult
+                {
+                    serverAddress = senderAddrIPv4,
+                    broadcastData = data,
+                    expiration = DateTime.Now.AddSeconds(5)
+                };
+
+                m_BroadcastsReceived[senderAddrIPv4] = recv;
+
+                OnReceivedBroadcast(senderAddrIPv4, BytesToString(m_MsgInBuffer));
+            }
+
+            return networkEvent;
         }
 
         private void RemoveOldReceivedBroadcasts()

@@ -38,8 +38,7 @@ public class MyNetworkManager : NetworkManager {
     private void StartBroadcasting(string deviceName, int networkPort)
     {
         if(discovery.Running) discovery.StopBroadcast();
-        discovery.broadcastData = deviceName + ":port:" + networkPort;
-        discovery.Initialize();
+        discovery.BroadcastData = deviceName + ":port:" + networkPort;
         discovery.StartAsServer();
     }
 
