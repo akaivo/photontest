@@ -12,6 +12,9 @@ public class MyDiscoveryHUD : MonoBehaviour {
     public CustomNetworkDiscovery discovery;
     public MyNetworkManager manager;
 
+    private float xpos, ypos;
+    private float spacing = 50f;
+
     private enum DiscoveryState
     {
         Stopped,
@@ -22,6 +25,9 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void OnGUI()
     {
+        xpos = 10f;
+        ypos = 10f;
+
         if(manager.IsPureClient)
         {
             ShowDisconnectButton();
@@ -30,10 +36,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
         {
             if(!manager.IsHosting)
             {
-                if (GUI.Button(new Rect(10, 10 + 300, 200, 45), "Host"))
-                {
-                    manager.StartHosting();
-                };
+                ShowHostButton();
             }
             switch (state)
             {
@@ -60,26 +63,29 @@ public class MyDiscoveryHUD : MonoBehaviour {
         }
     }
 
+    private void ShowHostButton()
+    {
+        if (GUI.Button(GetNextRect(), "Host"))
+        {
+            manager.StartHosting();
+        };
+    }
+
     private void ShowAvailableSessions()
     {
         var broadcasts = discovery.BroadcastsReceived;
-        int i = 0;
-        foreach (var kvpair in broadcasts)
+        foreach (var broadcast in broadcasts.Values)
         {
-            var r = new Rect(10, 10 + 50 * i, 200, 45);
-            string broadcastData = kvpair.Value.broadcastData;
-            int port = int.Parse(broadcastData.Split(':').Last());
-            string computer = broadcastData.Split(':').First();
-            if (GUI.Button(r, kvpair.Value.broadcastData.ToString()))
+            int port = ExtractPort(broadcast.broadcastData);
+            if (GUI.Button(GetNextRect(), broadcast.broadcastData.ToString()))
             {
-                manager.JoinGameAt(kvpair.Value.serverAddress, port);
+                manager.JoinGameAt(broadcast.serverAddress, port);
                 StopBroadcasting();
                 break;//dictionary gets cleared through JoinGameAt causing foreach to throw exception if loop continues
             };
-            i++;
         }
 
-        if (GUI.Button(new Rect(10, 10 + 50 * i, 200, 45), "Cancel"))
+        if (GUI.Button(GetNextRect(), "Cancel"))
         {
             StartBroadcasting(SystemInfo.deviceName, manager.networkPort);
         };
@@ -87,8 +93,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void ShowJoinOtherButton()
     {
-        var r = new Rect(10, 10, 200, 45);
-        if (GUI.Button(r, "Join Other Session"))
+        if (GUI.Button(GetNextRect(), "Join Other Session"))
         {
             StartListening();
         };
@@ -96,8 +101,7 @@ public class MyDiscoveryHUD : MonoBehaviour {
 
     private void ShowDisconnectButton()
     {
-        var r = new Rect(10, 10, 200, 45);
-        if (GUI.Button(r, "Disconnect"))
+        if (GUI.Button(GetNextRect(), "Disconnect"))
         {
             manager.Disconnect();
         };
@@ -122,5 +126,17 @@ public class MyDiscoveryHUD : MonoBehaviour {
     {
         if (discovery.Running) discovery.StopBroadcast();
         state = DiscoveryState.Stopped;
+    }
+
+    private Rect GetNextRect()
+    {
+        Rect r = new Rect(xpos, ypos, 200, 45);
+        ypos += spacing;
+        return r;
+    }
+
+    private static int ExtractPort(string broadcastData)
+    {
+        return int.Parse(broadcastData.Split(':').Last());
     }
 }
