@@ -24,10 +24,10 @@ public class PhotonSendMesh : Photon.MonoBehaviour {
         Debug.Log("Sending mesh...");
 
         byte[] serializedMesh = SimpleMeshSerializer.Serialize(new Mesh[] { mesh });
-        Debug.Log("Serialized mesh size: " + serializedMesh.LongLength);
+        Debug.LogFormat("Serialized mesh size: {0} KB", serializedMesh.LongLength / 1000);
 
         byte[] compressedSerializedMesh = CLZF2.Compress(serializedMesh);
-        Debug.Log("Compressed serialized mesh size: " + compressedSerializedMesh.LongLength);
+        Debug.LogFormat("Compressed serialized mesh size: {0} KB", compressedSerializedMesh.LongLength / 1000);
 
         photonView.RPC("ReceiveMesh", PhotonTargets.AllViaServer, compressedSerializedMesh);
     }
@@ -37,10 +37,10 @@ public class PhotonSendMesh : Photon.MonoBehaviour {
     {
         Debug.Log("Received mesh!");
 
-        Debug.Log("Compressed serialized mesh size: " + compressedSerializedMesh.LongLength);
+        Debug.LogFormat("Compressed serialized mesh size: {0} KB", compressedSerializedMesh.LongLength / 1000);
 
         byte[] serializedMesh = CLZF2.Decompress(compressedSerializedMesh);
-        Debug.Log("Serialized mesh size: " + serializedMesh.LongLength);
+        Debug.LogFormat("Serialized mesh size: {0} KB", serializedMesh.LongLength / 1000);
 
         List<Mesh> receivedMesh = (List<Mesh>)SimpleMeshSerializer.Deserialize(serializedMesh);
         meshFilter.mesh = receivedMesh[0];
