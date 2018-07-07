@@ -12,7 +12,6 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     public bool AutoConnect = true;
 
     public byte Version = 1;
-    public string userId = "master";
     public int SendRate = 50;
     public int SendRateOnSerialize = 25;
 
@@ -49,7 +48,7 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     {
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
         PhotonNetwork.AuthValues = new AuthenticationValues();
-        PhotonNetwork.AuthValues.UserId = userId;
+        PhotonNetwork.AuthValues.UserId = SystemInfo.deviceUniqueIdentifier;
         PhotonNetwork.JoinRandomRoom();
     }
 
