@@ -43,4 +43,6 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - ReceiveMesh
+  - ReceiveMeshHeader
+  - ReceiveMeshChunk
   DisableAutoOpenWizard: 1

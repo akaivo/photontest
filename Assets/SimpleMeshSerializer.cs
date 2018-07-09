@@ -138,6 +138,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             // Create the mesh.
             Mesh mesh = new Mesh();
+            mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
             mesh.vertices = vertices;
             mesh.triangles = triangleIndices;
             // Reconstruct the normals from the vertices and triangles.
